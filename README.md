@@ -2,7 +2,7 @@ The extensions library used in Tachiyomi.
 
 ```
 ext {
-    libVersion = '10'
+    libVersion = '13'
 }
 
 dependencies {
