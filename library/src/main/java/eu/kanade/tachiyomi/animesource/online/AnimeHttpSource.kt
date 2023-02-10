@@ -3,7 +3,6 @@ package eu.kanade.tachiyomi.animesource.online
 import eu.kanade.tachiyomi.network.NetworkHelper
 import eu.kanade.tachiyomi.animesource.AnimeCatalogueSource
 import eu.kanade.tachiyomi.animesource.model.*
-import eu.kanade.tachiyomi.network.GET
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -270,6 +269,29 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
         throw Exception("Stub!")
     }
 
+
+    /**
+     * Returns the url of the provided anime
+     *
+     * @since extensions-lib 14
+     * @param anime the anime
+     * @return url of the anime
+     */
+    open fun getAnimeUrl(anime: SAnime): String {
+        throw Exception("Stub!")
+    }
+
+    /**
+     * Returns the url of the provided episode
+     *
+     * @since extensions-lib 14
+     * @param episode the episode
+     * @return url of the episode
+     */
+    open fun getEpisodeUrl(episode: SEpisode): String {
+        throw Exception("Stub!")
+    }
+
     /**
      * Called before inserting a new episode into database. Use it if you need to override episode
      * fields, like the title or the episode number. Do not change anything to [anime].
@@ -277,8 +299,7 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
      * @param episode the episode to be added.
      * @param anime the anime of the episode.
      */
-    open fun prepareNewEpisode(episode: SEpisode, anime: SAnime) {
-    }
+    open fun prepareNewEpisode(episode: SEpisode, anime: SAnime) {}
 
     /**
      * Returns the list of filters for the source.

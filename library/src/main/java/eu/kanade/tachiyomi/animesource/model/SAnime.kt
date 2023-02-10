@@ -18,6 +18,8 @@ interface SAnime {
 
     var thumbnail_url: String?
 
+    var update_strategy: UpdateStrategy
+
     var initialized: Boolean
 
     companion object {
