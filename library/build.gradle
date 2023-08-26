@@ -1,7 +1,11 @@
+import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.DokkaConfiguration.Visibility
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'maven-publish'
+    id 'org.jetbrains.dokka'
 }
 
 android {
@@ -31,6 +35,44 @@ dependencies {
 task androidSourcesJar(type: Jar) {
     classifier 'sources'
     from android.sourceSets.main.java.srcDirs
+}
+
+tasks.withType(DokkaTask.class) {
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set("extensions-lib")
+            moduleVersion.set(android.defaultConfig.versionName)
+            outputDirectory.set(file("build/docs/"))
+            // Speedup doc generation
+            // offlineMode.set(true)
+            includes.from("Module.md")
+
+            perPackageOption {
+                matchingRegex.set("android.content")
+                suppress.set(true)
+            }
+
+            documentedVisibilities.set([
+                Visibility.PUBLIC,
+                Visibility.PROTECTED
+            ])
+
+            externalDocumentationLink {
+                url.set(new URL("https://square.github.io/okhttp/4.x/"))
+                // https://github.com/square/okhttp/issues/7338
+                packageListUrl.set(new URL("https://colinwhite.me/okhttp3-package-list"))
+            }
+
+            externalDocumentationLink {
+                url.set(new URL("https://jsoup.org/apidocs/"))
+                packageListUrl.set(new URL("https://jsoup.org/apidocs/element-list"))
+            }
+
+            externalDocumentationLink {
+                url.set(new URL("https://reactivex.io/RxJava/1.x/javadoc/"))
+            }
+        }
+    }
 }
 
 project.afterEvaluate {

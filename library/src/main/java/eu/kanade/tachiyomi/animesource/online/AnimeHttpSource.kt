@@ -11,6 +11,7 @@ import rx.Observable
 
 /**
  * A simple implementation for sources from a website.
+ * Usually requires the usage of json serialization or similar techniques.
  */
 @Suppress("unused", "unused_parameter")
 abstract class AnimeHttpSource : AnimeCatalogueSource {
@@ -34,22 +35,48 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
     /**
      * Id of the source. By default it uses a generated id using the first 16 characters (64 bits)
      * of the MD5 of the string: sourcename/language/versionId
+     * Implementations MUST ONLY override this property to use a hardcoded ID when the source
+     * name or language were changed.
      * Note the generated id sets the sign bit to 0.
      */
     override val id: Long = throw Exception("Stub!")
 
     /**
-     * Headers used for requests.
+     * Headers used for requests. Result of [headersBuilder]
      */
     val headers: Headers = throw Exception("Stub!")
 
     /**
-     * Default network client for doing requests.
+     * Default network client for doing requests. Implementations can override this property
+     * for custom [OkHttpClient] instances.
+     *
+     * **Usage example:**
+     * ```
+     * import okhttp3.Dns
+     * .....
+     * override val client: OkHttpClient = 
+     *     network.client
+     *         .newBuilder()
+     *         .addInterceptor(RecaptchaDestroyer())
+     *         .dns(Dns.SYSTEM)
+     *         .build()
+     * ```
      */
     open val client: OkHttpClient = throw Exception("Stub!")
 
     /**
      * Headers builder for requests. Implementations can override this method for custom headers.
+     *
+     * **Usage examples:**
+     * ```
+     * // Adds headers to the default [Headers.Builder] instance, retaining
+     * // headers like the default(or user-made) User-Agent.
+     * override fun headersBuilder() = super.headersBuilder().add("Referer", baseUrl)
+     * ```
+     * ```
+     * // Creates a new, empty [Headers.Builder] instance and adds a single header.
+     * override fun headersBuilder() = Headers.Builder().add("Referer", baseUrl)
+     * ```
      */
     protected open fun headersBuilder(): Headers.Builder {
         throw Exception("Stub!")
@@ -88,7 +115,8 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
 
     /**
      * Returns an observable containing a page with a list of anime. Normally it's not needed to
-     * override this method.
+     * override this method, but can be useful to change the usual workflow and use functions with
+     * different signatures from [searchAnimeRequest] or [searchAnimeParse].
      *
      * @param page the page number to retrieve.
      * @param query the search query.
@@ -99,7 +127,7 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
     }
 
     /**
-     * Returns the request for the search anime given the page.
+     * Returns the request for the search anime given the page and filters.
      *
      * @param page the page number to retrieve.
      * @param query the search query.
@@ -174,6 +202,12 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
         throw Exception("Stub!")
     }
 
+    /**
+     * Returns an observable with the video list for an episode. Normally it's not needed to
+     * override this method.
+     *
+     * @param episode the episode to look for videos.
+     */
     override fun fetchVideoList(episode: SEpisode): Observable<List<Video>> {
         throw Exception("Stub!")
     }
@@ -219,18 +253,42 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
     }
 
     /**
-     * Sorts the video list
-     * Override this according to the user's preference
+     * Sorts the video list.
+     * Override this according to the user's preference.
+     *
+     * **Usage examples:**
+     * ```
+     * // Sorts by quality
+     * override fun List<Video>.sort(): List<Video> {
+     *     val quality = preferences.getString(PREF_QUALITY_KEY, PREF_QUALITY_DEFAULT)!!
+     *     return sortedWith(
+     *         compareBy { it.quality.contains(quality) }
+     *     ).reversed()
+     * }
+     * ```
+     * ```
+     * // Sorts by quality and hardsub language
+     * override fun List<Video>.sort(): List<Video> {
+     *    val quality = preferences.getString(PREF_QUALITY_KEY, PREF_QUALITY_DEFAULT)!!
+     *    val lang = preferences.getString(PREF_LANG_KEY, PREF_LANG_DEFAULT)!!
+     *    return sortedWith(
+     *        compareBy(
+     *            { it.quality.contains(quality) },
+     *            { it.quality.contains(lang) },
+     *        ),
+     *    ).reversed()
+     * }
+     * ```
      */
     protected open fun List<Video>.sort(): List<Video> {
         throw Exception("Stub!")
     }
 
     /**
-     * Returns the request for getting the url to the source image. Override only if it's needed to
+     * Returns the request for getting the url to the source video. Override only if it's needed to
      * override the url, send different headers or request method like POST.
      *
-     * @param video the chapter whose page list has to be fetched
+     * @param video the video whose its links have to be fetched.
      */
     protected open fun videoUrlRequest(video: Video): Request {
         throw Exception("Stub!")
@@ -271,7 +329,8 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
 
 
     /**
-     * Returns the url of the provided anime
+     * Returns the url of the provided anime. Useful to fix "open in webview" 
+     * without overriding [fetchAnimeDetails].
      *
      * @since extensions-lib 14
      * @param anime the anime
