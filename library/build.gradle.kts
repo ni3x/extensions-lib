@@ -1,12 +1,11 @@
-import java.net.URL
-import org.jetbrains.dokka.DokkaConfiguration.Visibility
-import org.jetbrains.dokka.gradle.DokkaTask
+import dev.adamko.dokkatoo.dokka.parameters.KotlinPlatform
+import dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     `maven-publish`
-    alias(libs.plugins.dokka)
+    alias(libs.plugins.dokkatoo)
 }
 
 val ver = "14"
@@ -49,39 +48,62 @@ dependencies {
     compileOnly(libs.kotlin.json.okio)
 }
 
-tasks.withType<DokkaTask>().configureEach {
-    dokkaSourceSets {
-        named("main") {
-            moduleName.set("extensions-lib")
-            moduleVersion.set(ver)
-            outputDirectory.set(file("build/docs/"))
-            // Speedup doc generation
-            // offlineMode.set(true)
-            includes.from("Module.md")
+dokkatoo {
+    moduleName.set("extensions-lib")
+    moduleVersion.set(ver)
+    dokkatooPublicationDirectory.set(layout.buildDirectory.dir("docs"))
+    dokkatooSourceSets.main {
+        includes.from("Module.md")
 
-            perPackageOption {
-                matchingRegex.set("android.content")
-                suppress.set(true)
+        // Temporary workaround for https://github.com/Kotlin/dokka/issues/2876.
+        analysisPlatform.set(KotlinPlatform.JVM)
+
+        perPackageOption {
+            matchingRegex.set("android.content")
+            suppress.set(true)
+        }
+
+        documentedVisibilities(VisibilityModifier.PUBLIC, VisibilityModifier.PROTECTED)
+
+        externalDocumentationLinks {
+            create("okhttp5") {
+                url("https://square.github.io/okhttp/5.x/")
             }
 
-            documentedVisibilities.set(
-                setOf(Visibility.PUBLIC, Visibility.PROTECTED)
-            )
-
-            // Note: this will show up a bruhzillion of warnings due to
-            // https://github.com/Kotlin/dokka/issues/3120
-            externalDocumentationLink {
-                url.set(URL("https://square.github.io/okhttp/5.x/"))
+            create("jsoup") {
+                url("https://jsoup.org/apidocs/")
+                packageListUrl("https://jsoup.org/apidocs/element-list")
             }
 
-            externalDocumentationLink {
-                url.set(URL("https://jsoup.org/apidocs/"))
-                packageListUrl.set(URL("https://jsoup.org/apidocs/element-list"))
+            create("rxjava") {
+                url("https://reactivex.io/RxJava/1.x/javadoc/")
             }
+        }
 
-            externalDocumentationLink {
-                url.set(URL("https://reactivex.io/RxJava/1.x/javadoc/"))
-            }
+        val packageRoot = projectDir.resolve("src/main/java/eu/kanade/tachiyomi/")
+        sourceLink {
+            localDirectory.set(packageRoot.resolve("util/JsonExtensions.kt"))
+            remoteUrl("https://github.com/aniyomiorg/extensions-lib/tree/main/library/src/main/java/eu/kanade/tachiyomi/util/JsonExtensions.kt")
+            remoteLineSuffix.set("#L")
+        }
+
+        sourceLink {
+            localDirectory.set(packageRoot.resolve("util/CoroutinesExtensions.kt"))
+            remoteUrl("https://github.com/aniyomiorg/extensions-lib/tree/main/library/src/main/java/eu/kanade/tachiyomi/util/CoroutinesExtensions.kt")
+            remoteLineSuffix.set("#L")
+        }
+
+        sourceLink {
+            localDirectory.set(packageRoot.resolve("animesource/"))
+            remoteUrl("https://github.com/aniyomiorg/aniyomi/tree/master/source-api/src/commonMain/kotlin/eu/kanade/tachiyomi/animesource/")
+            // The line number is wrong, so we're not going to highlight it.
+            remoteLineSuffix.set("#")
+        }
+
+        sourceLink {
+            localDirectory.set(packageRoot.resolve("network/"))
+            remoteUrl("https://github.com/aniyomiorg/aniyomi/tree/master/core/src/main/java/eu/kanade/tachiyomi/network/")
+            remoteLineSuffix.set("#") // Same as before.
         }
     }
 }
