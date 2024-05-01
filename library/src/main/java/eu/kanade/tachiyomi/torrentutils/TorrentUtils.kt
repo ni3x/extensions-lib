@@ -1,15 +1,19 @@
 package eu.kanade.tachiyomi.torrentutils
 
-import eu.kanade.tachiyomi.torrentutils.model.Torrent
+import eu.kanade.tachiyomi.torrentutils.model.TorrentInfo
 
 object TorrentUtils {
-
-    fun getTorrent(url: String, title: String): Torrent {
+    fun getTorrentInfo(
+        url: String,
+        title: String,
+    ): TorrentInfo {
         throw Exception("Stub!")
     }
 
-    fun getTorrentPlayUrl(torrent: Torrent, indexFile: Int): String {
+    fun getTorrentPlayUrl(
+        torrent: TorrentInfo,
+        indexFile: Int = 0,
+    ): String {
         throw Exception("Stub!")
     }
-
 }
