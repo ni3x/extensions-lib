@@ -6,6 +6,6 @@ ext {
 }
 
 dependencies {
-    compileOnly "com.github.aniyomiorg:extensions-lib:$libVersion"
+    compileOnly "com.github.ni3x:extensions-lib:$libVersion"
 }
 ```
