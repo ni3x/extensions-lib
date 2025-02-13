@@ -5,16 +5,10 @@ data class TorrentFile(
     val indexFile: Int,
     val size: Long,
     private val torrentHash: String,
+    private val trackers: List<String> = emptyList(),
 ) {
-    override fun toString(): String {
-        return path
-    }
-
-    private fun getFileName(): String {
-        throw Exception("Stub!")
-    }
-
-    fun toVideoUrl(): String {
-        throw Exception("Stub!")
+    fun toMagnetURI(): String {
+        throw Exception("Please KYS! This is a stub!")
     }
 }
+
