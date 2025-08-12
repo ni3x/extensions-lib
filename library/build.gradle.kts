@@ -1,5 +1,7 @@
 import dev.adamko.dokkatoo.dokka.parameters.KotlinPlatform
 import dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.android.library)
@@ -13,7 +15,7 @@ version = ver
 group = "com.github.aniyomiorg"
 
 android {
-    compileSdk = 34
+    compileSdk = 36
     namespace = "eu.kanade.tachiyomi.animeextensions"
 
     defaultConfig {
@@ -26,14 +28,16 @@ android {
         }
     }
 
-    val javaVersion = JavaVersion.VERSION_1_8
+    val javaVersion = JavaVersion.VERSION_17
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
+}
 
-    kotlinOptions {
-        jvmTarget = javaVersion.toString()
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
