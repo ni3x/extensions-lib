@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.animesource
 
+import eu.kanade.tachiyomi.animesource.model.Hoster
 import eu.kanade.tachiyomi.animesource.model.Video
 import eu.kanade.tachiyomi.animesource.model.SEpisode
 import eu.kanade.tachiyomi.animesource.model.SAnime
@@ -21,7 +22,7 @@ interface AnimeSource {
     val name: String
 
     /**
-     * Get the updated details for a anime.
+     * Get the updated details for an anime.
      *
      * @since extensions-lib 14
      * @param anime the anime to update.
@@ -30,7 +31,7 @@ interface AnimeSource {
     suspend fun getAnimeDetails(anime: SAnime): SAnime
 
     /**
-     * Get all the available episodes for a anime.
+     * Get all the available episodes for an anime.
      *
      * @since extensions-lib 14
      * @param anime the anime to update.
@@ -39,29 +40,20 @@ interface AnimeSource {
     suspend fun getEpisodeList(anime: SAnime): List<SEpisode>
 
     /**
-     * Get the list of videos a episode has.
+     * Get the list of hoster for an episode.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param episode the episode.
-     * @return the videos for the episode.
+     * @return the hosters for the episode.
      */
-    suspend fun getVideoList(episode: SEpisode): List<Video>
+    suspend fun getHosterList(episode: SEpisode): List<Hoster>
 
-    @Deprecated(
-        "Use the non-RxJava API instead",
-        ReplaceWith("getAnimeDetails"),
-    )
-    fun fetchAnimeDetails(anime: SAnime): Observable<SAnime>
-
-    @Deprecated(
-        "Use the non-RxJava API instead",
-        ReplaceWith("getEpisodeList"),
-    )
-    fun fetchEpisodeList(anime: SAnime): Observable<List<SEpisode>>
-
-    @Deprecated(
-        "Use the non-RxJava API instead",
-        ReplaceWith("getVideoList"),
-    )
-    fun fetchVideoList(episode: SEpisode): Observable<List<Video>>
+    /**
+     * Get the list of videos for a hoster.
+     *
+     * @since extensions-lib 16
+     * @param hoster the hoster.
+     * @return the videos for the hoster.
+     */
+    suspend fun getVideoList(hoster: Hoster): List<Video>
 }
