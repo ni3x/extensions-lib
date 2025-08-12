@@ -7,7 +7,6 @@ import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import rx.Observable
 
 /**
  * A simple implementation for sources from a website.
@@ -294,6 +293,7 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
 
     /**
      * Sorts the hoster list. Override this according to the user's preference.
+     * This function is called by the app and should not be called in the extension.
      *
      * @since extensions-lib 16
      */
@@ -302,8 +302,8 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
     }
 
     /**
-     * Sorts the video list.
-     * Override this according to the user's preference.
+     * Sorts the video list for a hoster. Override this according to the user's preference.
+     * This function is called by the app and should not be called in the extension.
      *
      * **Usage examples:**
      * ```

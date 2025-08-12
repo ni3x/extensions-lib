@@ -44,8 +44,6 @@ tasks.withType<KotlinCompile>().configureEach {
 dependencies {
     compileOnly(libs.okhttp)
     compileOnly(libs.jsoup)
-    compileOnly(libs.rxjava)
-    compileOnly(libs.rxandroid)
     compileOnly(libs.injekt.core)
     compileOnly(libs.coroutines)
     compileOnly(libs.kotlin.json)
@@ -77,10 +75,6 @@ dokkatoo {
             create("jsoup") {
                 url("https://jsoup.org/apidocs/")
                 packageListUrl("https://jsoup.org/apidocs/element-list")
-            }
-
-            create("rxjava") {
-                url("https://reactivex.io/RxJava/1.x/javadoc/")
             }
         }
 
