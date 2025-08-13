@@ -1,5 +1,7 @@
 import dev.adamko.dokkatoo.dokka.parameters.KotlinPlatform
 import dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.android.library)
@@ -8,12 +10,12 @@ plugins {
     alias(libs.plugins.dokkatoo)
 }
 
-val ver = "14"
+val ver = "16-rc1"
 version = ver
 group = "com.github.aniyomiorg"
 
 android {
-    compileSdk = 34
+    compileSdk = 36
     namespace = "eu.kanade.tachiyomi.animeextensions"
 
     defaultConfig {
@@ -26,22 +28,22 @@ android {
         }
     }
 
-    val javaVersion = JavaVersion.VERSION_1_8
+    val javaVersion = JavaVersion.VERSION_17
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
+}
 
-    kotlinOptions {
-        jvmTarget = javaVersion.toString()
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
 dependencies {
     compileOnly(libs.okhttp)
     compileOnly(libs.jsoup)
-    compileOnly(libs.rxjava)
-    compileOnly(libs.rxandroid)
     compileOnly(libs.injekt.core)
     compileOnly(libs.coroutines)
     compileOnly(libs.kotlin.json)
@@ -73,10 +75,6 @@ dokkatoo {
             create("jsoup") {
                 url("https://jsoup.org/apidocs/")
                 packageListUrl("https://jsoup.org/apidocs/element-list")
-            }
-
-            create("rxjava") {
-                url("https://reactivex.io/RxJava/1.x/javadoc/")
             }
         }
 
