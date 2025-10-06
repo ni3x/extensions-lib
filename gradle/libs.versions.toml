@@ -4,6 +4,7 @@ coroutines_version = "1.10.2"
 kotlin_version = "2.2.0"
 serialization_version = "1.9.0"
 dokkatoo_version = "2.4.0"
+extensions_lib_version = "16"
 
 [libraries]
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
@@ -12,6 +13,7 @@ kotlin-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", ver
 kotlin-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "serialization_version" }
 
 injekt-core = { module = "com.github.mihonapp:injekt", version = "91edab2317" }
+extensions-lib = { module = "com.github.aniyomiorg:extensions-lib", version.ref = "extensions_lib_version" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.21.1" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version = "5.1.0" }
 
