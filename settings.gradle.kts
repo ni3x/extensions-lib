@@ -15,3 +15,4 @@ pluginManagement {
 }
 
 include(":library")
+include(":core")

@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.dokkatoo)
 }
 
-val ver = "16-rc4"
+val ver = "16"
 version = ver
 group = "com.github.aniyomiorg"
 
@@ -19,7 +19,7 @@ android {
     namespace = "eu.kanade.tachiyomi.animeextensions"
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 26
     }
 
     buildTypes {

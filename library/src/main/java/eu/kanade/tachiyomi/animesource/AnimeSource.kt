@@ -23,7 +23,7 @@ interface AnimeSource {
     /**
      * Get the updated details for an anime.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param anime the anime to update.
      * @return the updated anime.
      */
@@ -32,7 +32,7 @@ interface AnimeSource {
     /**
      * Get all the available episodes for an anime.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param anime the anime to update.
      * @return the episodes for the anime.
      */

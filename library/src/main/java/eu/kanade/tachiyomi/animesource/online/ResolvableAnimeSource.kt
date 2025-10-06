@@ -7,7 +7,7 @@ import eu.kanade.tachiyomi.animesource.model.SEpisode
 /**
  * A source that may handle opening an SAnime or SEpisode for a given URI.
  *
- * @since extensions-lib 14
+ * @since extensions-lib 16
  */
 interface ResolvableAnimeSource : AnimeSource {
 
@@ -15,7 +15,7 @@ interface ResolvableAnimeSource : AnimeSource {
      * Returns what the given URI may open.
      * Returns [UriType.Unknown] if the source is not able to resolve the URI.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      */
     fun getUriType(uri: String): UriType
 
@@ -23,7 +23,7 @@ interface ResolvableAnimeSource : AnimeSource {
      * Called if [getUriType] is [UriType.Anime].
      * Returns the corresponding [SAnime], if possible.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      */
     suspend fun getAnime(uri: String): SAnime?
 
@@ -31,7 +31,7 @@ interface ResolvableAnimeSource : AnimeSource {
      * Called if [getUriType] is [UriType.Episode].
      * Returns the corresponding [SEpisode], if possible.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      */
     suspend fun getEpisode(uri: String): SEpisode?
 }

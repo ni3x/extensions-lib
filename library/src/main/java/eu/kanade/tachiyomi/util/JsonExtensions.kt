@@ -13,7 +13,7 @@ import uy.kohesive.injekt.api.get
  * Parse and serialize the transformed response body as the type <T>.
  *
  * @param transform transformer function that does required changes to the response body.
- * @since extensions-lib 14
+ * @since extensions-lib 16
  */
 inline fun <reified T> Response.parseAs(transform: (String) -> String): T {
     val responseBody = transform(body.string())
@@ -27,7 +27,7 @@ inline fun <reified T> Response.parseAs(transform: (String) -> String): T {
  * a String, so you may have a small performance gain over `Response.parseAs(transform)`,
  * mainly in large responses.
  *
- * @since extensions-lib 14
+ * @since extensions-lib 16
  */
 @ExperimentalSerializationApi
 inline fun <reified T> Response.parseAs(): T = body.source().use {
@@ -38,7 +38,7 @@ inline fun <reified T> Response.parseAs(): T = body.source().use {
  * Parses and serializes the transformed String as the type <T>.
  *
  * @param transform transformer function that does required changes to the String.
- * @since extensions-lib 14
+ * @since extensions-lib 16
  */
 inline fun <reified T> String.parseAs(transform: (String) -> String): T =
     Injekt.get<Json>().decodeFromString(transform(this))
@@ -46,6 +46,6 @@ inline fun <reified T> String.parseAs(transform: (String) -> String): T =
 /**
  * Parses and serializes the Json String as the type <T>.
  *
- * @since extensions-lib 14
+ * @since extensions-lib 16
  */
 inline fun <reified T> String.parseAs(): T = Injekt.get<Json>().decodeFromString(this)
