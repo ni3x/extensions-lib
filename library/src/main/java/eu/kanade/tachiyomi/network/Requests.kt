@@ -27,7 +27,7 @@ fun GET(url: String,
 }
 
 /**
- * @since extensions-lib 14
+ * @since extensions-lib 16
  */
 fun GET(url: HttpUrl,
         headers: Headers = DEFAULT_HEADERS,

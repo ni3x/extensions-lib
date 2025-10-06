@@ -76,7 +76,7 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
      * Can be used to generate outdated IDs, such as when the source name or language
      * needs to be changed but migrations can be avoided.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param name [String] the name of the source
      * @param lang [String] the language of the source
      * @param versionId [Int] the version ID of the source
@@ -420,7 +420,7 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
      * Returns the url of the provided anime. Useful to fix "open in webview"
      * without overriding [getAnimeDetails].
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param anime the anime
      * @return url of the anime
      */
@@ -431,7 +431,7 @@ abstract class AnimeHttpSource : AnimeCatalogueSource {
     /**
      * Returns the url of the provided episode.
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param episode the episode
      * @return url of the episode
      */

@@ -12,7 +12,7 @@ class JavaScriptEngine(context: Context) {
      * Evaluate arbitrary JavaScript code and get the result as a primitive type
      * (e.g., String, Int).
      *
-     * @since extensions-lib 14
+     * @since extensions-lib 16
      * @param script JavaScript to execute.
      * @return Result of JavaScript code as a primitive type.
      */
